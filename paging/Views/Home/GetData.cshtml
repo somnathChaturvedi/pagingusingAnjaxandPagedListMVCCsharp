@@ -4,13 +4,13 @@
     Layout = null;
 }
 <div id="content">
-    <table class="table">
+    <table id="testTable" class="table">
         <tr>
             <th>
                 ID
             </th>
             <th>
-                Name
+               <a href="#" onclick="sortTable()">Name <img width="20" src="~/sorting.png" /></a>
             </th>
         </tr>
         @foreach (var item in Model)

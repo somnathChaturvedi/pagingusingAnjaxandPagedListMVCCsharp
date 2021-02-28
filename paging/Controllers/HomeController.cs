@@ -16,10 +16,13 @@ namespace paging.Controllers
             return View();
         }
 
-        public ActionResult GetData(int? page)
+        public ActionResult GetData(int? page, string txtsearch)
         {
-            
-            var emps = from s in dbcontext.tblEmps orderby s.id select s;
+            IQueryable<tblEmp> emps;
+            if (!string.IsNullOrEmpty(txtsearch))
+                emps = from s in dbcontext.tblEmps orderby s.id where s.name.Contains(txtsearch) select s;
+            else
+                emps = from s in dbcontext.tblEmps orderby s.id select s;
 
             int pageSize = 5;
             int pageNumber = (page ?? 1);

@@ -2,6 +2,16 @@
     ViewBag.Title = "Home Page";
 }
 <link href="~/Content/PagedList.css" rel="stylesheet" />
+<script src="~/Scripts/sorting.js"></script>
+<br />
+<div class="row">
+    <div class="col-md-4">
+        <input type="text" id="txtname" name="Empname" class="form-control" />
+    </div>
+    <div class="col-md-2"><button id="btnsearch">Search</button></div>
+    <div class="col-md-2"><button id="btnall">View All</button></div>
+</div>
+<br />
 
 @Html.Action("GetData")
 
@@ -9,8 +19,10 @@
     <script language="javascript" type="text/javascript">
         $(document).ready(function () {
             $(document).on("click", "#contentPager a[href]", function () {
+                var name = $("#txtname").val();
                 $.ajax({
                     url: $(this).attr("href"),
+                    data: { txtsearch: name },
                     type: 'GET',
                     cache: false,
                     success: function (result) {
@@ -19,6 +31,29 @@
                 });
                 return false;
             });
+        });
+         $("#btnsearch").click(function () {
+                var name = $("#txtname").val();
+                $.ajax({
+                    url: '@Url.Action("GetData", "Home")',
+                    data: { txtsearch: name },
+                    type: 'GET',
+                    cache: false,
+                    success: function (result) {
+                        $('#content').html(result);
+                    }
+                });
+        });
+        $("#btnall").click(function () {
+                $("#txtname").val('');
+                $.ajax({
+                    url: '@Url.Action("GetData", "Home")',
+                    type: 'GET',
+                    cache: false,
+                    success: function (result) {
+                        $('#content').html(result);
+                    }
+                });
         });
     </script>
 }
